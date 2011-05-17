@@ -1,6 +1,7 @@
 #include <iostream>
+#include "bppc.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Hello, world!" << std::endl;
+    BPPC * problem = new BPPC(string(argv[1]));
     return 0;
 }

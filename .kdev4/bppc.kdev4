@@ -1,2 +1,33 @@
 [Buildset]
 BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x08\x00b\x00p\x00p\x00c)
+
+[CMake]
+BuildDirs=/home/lmborba/projects/bppc/build
+CMakeDir=/usr/share/cmake-2.8/Modules
+Current CMake Binary=file:///usr/bin/cmake
+CurrentBuildDir=file:///home/lmborba/projects/bppc/build
+CurrentBuildType=Debug
+CurrentInstallDir=
+Extra Arguments=
+ProjectRootRelative=./
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=debug
+Configured Launchers=gdb
+Name=bppc
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Configured from ProjectItem=bppc,bppc
+Project Target=bppc,bppc
+Working Directory=file:///home/lmborba/projects/bppc/build/
+isExecutable=false
+
+[MakeBuilder]
+Number Of Jobs=1
+
+[Project]
+VersionControlSupport=kdevgit
