@@ -1,0 +1,4 @@
+[Project]
+Name=bppc
+Manager=KDevCMakeManager
+VersionControl=kdevgit
