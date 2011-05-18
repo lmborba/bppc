@@ -54,3 +54,22 @@ Graph& Graph::operator=(const Graph& other)
   set_parameters(other);
   return *this;
 };
+
+string Graph::to_string() const
+{
+  stringstream ss;
+  for (int i=0;i<adjacency_lists.size();i++) {
+    ss << i  << " => ";
+    for (list<Incidence>::const_iterator it = adjacency_lists[i].begin(); it != adjacency_lists[i].end();it++) {
+      ss << it->get_incident_node() << " ";
+    };
+    ss << endl;
+  };
+  return ss.str();
+};
+
+ostream& operator<<(ostream& out, const Graph& gra)
+{
+  out << gra.to_string();
+  return out;
+};

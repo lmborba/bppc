@@ -22,13 +22,15 @@
 
 #include <vector>
 #include <list>
+#include <iostream>
+#include <sstream>
 #include "incidence.h"
 
 using namespace std;
 
 class Graph
 {
-  
+
 private:
   vector<list<Incidence> > adjacency_lists;
 
@@ -39,6 +41,8 @@ public:
   virtual Graph& operator=(const Graph& other);
   void add_edge(int node_src, int node_dst, int cost);
   void add_bidirectional_edge(int node_a, int node_b, int cost);
+  friend ostream& operator<<(ostream& out, const Graph& gra);
+  string to_string() const;
 
 private:
   void set_parameters(const Graph& other);

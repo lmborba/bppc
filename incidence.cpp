@@ -46,12 +46,12 @@ Incidence& Incidence::operator=(const Incidence& other)
   return *this;
 }
 
-int Incidence::get_incident_node()
+int Incidence::get_incident_node() const
 {
   return incident_node;
 };
 
-int Incidence::get_cost()
+int Incidence::get_cost() const
 {
   return cost;
 };

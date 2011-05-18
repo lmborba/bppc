@@ -108,6 +108,78 @@ bppc/fast:
 	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/build
 .PHONY : bppc/fast
 
+bppc.o: bppc.cpp.o
+.PHONY : bppc.o
+
+# target to build an object file
+bppc.cpp.o:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bppc.cpp.o
+.PHONY : bppc.cpp.o
+
+bppc.i: bppc.cpp.i
+.PHONY : bppc.i
+
+# target to preprocess a source file
+bppc.cpp.i:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bppc.cpp.i
+.PHONY : bppc.cpp.i
+
+bppc.s: bppc.cpp.s
+.PHONY : bppc.s
+
+# target to generate assembly for a file
+bppc.cpp.s:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bppc.cpp.s
+.PHONY : bppc.cpp.s
+
+graph.o: graph.cpp.o
+.PHONY : graph.o
+
+# target to build an object file
+graph.cpp.o:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/graph.cpp.o
+.PHONY : graph.cpp.o
+
+graph.i: graph.cpp.i
+.PHONY : graph.i
+
+# target to preprocess a source file
+graph.cpp.i:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/graph.cpp.i
+.PHONY : graph.cpp.i
+
+graph.s: graph.cpp.s
+.PHONY : graph.s
+
+# target to generate assembly for a file
+graph.cpp.s:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/graph.cpp.s
+.PHONY : graph.cpp.s
+
+incidence.o: incidence.cpp.o
+.PHONY : incidence.o
+
+# target to build an object file
+incidence.cpp.o:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/incidence.cpp.o
+.PHONY : incidence.cpp.o
+
+incidence.i: incidence.cpp.i
+.PHONY : incidence.i
+
+# target to preprocess a source file
+incidence.cpp.i:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/incidence.cpp.i
+.PHONY : incidence.cpp.i
+
+incidence.s: incidence.cpp.s
+.PHONY : incidence.s
+
+# target to generate assembly for a file
+incidence.cpp.s:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/incidence.cpp.s
+.PHONY : incidence.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -141,6 +213,15 @@ help:
 	@echo "... bppc"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... bppc.o"
+	@echo "... bppc.i"
+	@echo "... bppc.s"
+	@echo "... graph.o"
+	@echo "... graph.i"
+	@echo "... graph.s"
+	@echo "... incidence.o"
+	@echo "... incidence.i"
+	@echo "... incidence.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

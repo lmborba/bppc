@@ -26,20 +26,20 @@ class Incidence
 private:
   int incident_node;
   int cost;
-  
+
 public:
   Incidence(int _incident_node, int _cost);
   Incidence(const Incidence& other);
   virtual ~Incidence();
   virtual Incidence& operator=(const Incidence& other);
-  int get_incident_node();
-  int get_cost();
+  int get_incident_node() const;
+  int get_cost() const;
   void set_incident_node(int _incident_node);
   void set_cost(int _cost);
-  
+
 private:
   void set_parameters(const Incidence& other);
-  
+
 };
 
 #endif // INCIDENCE_H
