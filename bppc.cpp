@@ -22,7 +22,9 @@ void BPPC::read_line(int line, ifstream & file)
 {
   int c;
   file >> c;
-  file >> (*items)[line];
+  int weight;
+  file >> weight;
+  bin_packing->add_item(weight);
   string cur_line;
   getline(file,cur_line);
   stringstream ss(cur_line);
@@ -38,19 +40,30 @@ BPPC::BPPC(string file_name)
   ifstream bppc_file;
   bppc_file.open(file_name.c_str());
   int n_items;
+  int capacity;
   bppc_file >> n_items;
   bppc_file >> capacity;
   conflicts = new Graph(n_items);
-  items = new vector<int>(n_items);
-  for (int i=0;i<items->size();i++) {
+  bin_packing = new BPP(capacity);
+  for (int i=0;i<n_items;i++) {
     read_line(i,bppc_file);
   };
-  cout << (*conflicts);
+  bppc_file.close();
+
+  list<int> a = conflicts->johnsons_maximal_clique();
+  for (list<int>::iterator it = a.begin(); it != a.end() ;it++) {
+    cout << *it << endl;
+  };
 }
+
+int BPPC::lower_bound_0_bpp()
+{
+  bin_packing->lower_bound_0();
+};
 
 BPPC::~BPPC()
 {
   delete conflicts;
-  delete items;
+  delete bin_packing;
 }
 

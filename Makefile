@@ -108,6 +108,56 @@ bppc/fast:
 	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/build
 .PHONY : bppc/fast
 
+#=============================================================================
+# Target rules for targets named doc
+
+# Build rule for target.
+doc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 doc
+.PHONY : doc
+
+# fast build rule for target.
+doc/fast:
+	$(MAKE) -f CMakeFiles/doc.dir/build.make CMakeFiles/doc.dir/build
+.PHONY : doc/fast
+
+#=============================================================================
+# Target rules for targets named doxygen
+
+# Build rule for target.
+doxygen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 doxygen
+.PHONY : doxygen
+
+# fast build rule for target.
+doxygen/fast:
+	$(MAKE) -f CMakeFiles/doxygen.dir/build.make CMakeFiles/doxygen.dir/build
+.PHONY : doxygen/fast
+
+bpp.o: bpp.cpp.o
+.PHONY : bpp.o
+
+# target to build an object file
+bpp.cpp.o:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bpp.cpp.o
+.PHONY : bpp.cpp.o
+
+bpp.i: bpp.cpp.i
+.PHONY : bpp.i
+
+# target to preprocess a source file
+bpp.cpp.i:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bpp.cpp.i
+.PHONY : bpp.cpp.i
+
+bpp.s: bpp.cpp.s
+.PHONY : bpp.s
+
+# target to generate assembly for a file
+bpp.cpp.s:
+	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/bpp.cpp.s
+.PHONY : bpp.cpp.s
+
 bppc.o: bppc.cpp.o
 .PHONY : bppc.o
 
@@ -211,8 +261,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... bppc"
+	@echo "... doc"
+	@echo "... doxygen"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... bpp.o"
+	@echo "... bpp.i"
+	@echo "... bpp.s"
 	@echo "... bppc.o"
 	@echo "... bppc.i"
 	@echo "... bppc.s"

@@ -23,24 +23,62 @@
 #include <sstream>
 #include <fstream>
 #include "graph.h"
+#include "bpp.h"
 #include <iostream>
 
 using namespace std;
 
+/**
+ * \brief Classe que define o Bin Packing Problem with Conflicts
+ *
+ */
 class BPPC
 {
 
-private:
-  int capacity;
-  Graph * conflicts;
-  vector<int> * items;
-  
-public:
-BPPC(string file_name);
-virtual ~BPPC();
+ private:
+  Graph * conflicts; ///< Grafo de conflitos.
+  BPP * bin_packing; ///< O problema bin packing sem o grafo de conflitos.
 
-private:
+ public:
+
+  /**
+   * \brief Construtor do problema BPPC.
+   *
+   * Dado um arquivo com dados de entrada padronizados, define um Bin Packing Problem with Conflicts.
+   * \param[in] file_name Path para o arquivo que contém os dados do problema.
+   */
+  BPPC(string file_name);
+
+  /**
+   * \brief Destrutor.
+   */
+  virtual ~BPPC();
+
+  /**
+   * \brief Cálculo simples de limitante inferior baseado no BPP.
+   *
+   * Método de cálculo: \n
+   * 1. Soma todos os pesos e divide pela capacidade das caixas. \n
+   * 2. Retorna o menor inteiro com valor maior ou igual ao do resultado do passo 1.
+   *
+   * \return Limitante inferior baseado no Bin Packing Problem.
+   */
+  int lower_bound_0_bpp();
+
+ private:
+
+  /**
+   * \internal
+   * \brief Lê uma linha do arquivo, referente a um dos itens do Bin Packing Problem.
+   *
+   * A primeira linha do arquivo define o número de itens e a capacidade de cada caixa.
+   * A seguir, cada um dos itens é descrito, com peso e os itens que não podem estar contidos na mesma caixa.
+   * Este método privado lê cada uma destas linhas, armazenando os dados no grafo de conflitos e no BPP.
+   * \param line Número da linha sendo lida.
+   * \param file stream do arquivo sendo lido.
+   */
   void read_line(int line, ifstream & file);
+
 };
 
 #endif // BPPC_H

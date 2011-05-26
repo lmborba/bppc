@@ -73,3 +73,51 @@ ostream& operator<<(ostream& out, const Graph& gra)
   out << gra.to_string();
   return out;
 };
+
+int Graph::number_of_nodes()
+{
+  return adjacency_lists.size();
+};
+
+list<int> Graph::johnsons_maximal_clique()
+{
+
+  list<int> sub;
+  int n_nodes = number_of_nodes();
+  vector<bool> rest(n_nodes,true);
+  list<int> rest_list;
+  for (int i=0;i<n_nodes;i++) {
+    rest_list.push_back(i);
+  };
+
+  while (rest_list.size()) {
+    int cur = -1;
+    int max = -1;
+    for (list<int>::iterator nd = rest_list.begin(); nd != rest_list.end(); nd++) {
+      int val = 0;
+      for (list<Incidence>::iterator it = adjacency_lists[*nd].begin(); it != adjacency_lists[*nd].end(); it++) {
+        if (rest[it->get_incident_node()]) {
+          val++;
+        };
+      };
+      if (val > max) {
+        cur = *nd;
+        max = val;
+      };
+    };
+    sub.push_back(cur);
+    rest_list = list<int>(0);
+    vector<bool> new_rest(n_nodes,false);
+    for (list<Incidence>::iterator it = adjacency_lists[cur].begin(); it != adjacency_lists[cur].end(); it++) {
+      if (rest[it->get_incident_node()]) {
+        new_rest[it->get_incident_node()] = true;
+        rest_list.push_back(it->get_incident_node());
+      };
+    };
+    rest = new_rest;
+
+  };
+
+  return sub;
+
+};

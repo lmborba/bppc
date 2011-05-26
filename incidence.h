@@ -20,24 +20,81 @@
 #ifndef INCIDENCE_H
 #define INCIDENCE_H
 
+/**
+ * \brief Classe que define a incidência de uma aresta em um nodo de um grafo.
+ */
 class Incidence
 {
 
 private:
-  int incident_node;
-  int cost;
+  int incident_node; ///< O nodo incidido pela aresta.
+  int cost; ///< O custo da aresta.
 
 public:
+  /**
+   * \brief Construtor padrão.
+   *
+   * Cria a incidência.
+   *
+   * \param _incident_node O nó incidido.
+   * \param _cost O custo da aresta.
+   */
   Incidence(int _incident_node, int _cost);
+
+  /**
+   * \brief Construtor de cópia.
+   *
+   * Copia os dados de other para o objeto atual.
+   *
+   * \param other o objeto sendo copiado.
+   */
   Incidence(const Incidence& other);
+
+  /**
+   * \brief Destrutor.
+   */
   virtual ~Incidence();
+
+  /**
+   * \brief Copia um Incidence.
+   *
+   * Copia os dados de other para o objeto atual.
+   *
+   * \param other o objeto sendo copiado.
+   */
   virtual Incidence& operator=(const Incidence& other);
+
+  /**
+   * \brief Getter que retorno o nodo incidido.
+   */
   int get_incident_node() const;
+
+  /**
+   * \brief Getter que retorna o custo da aresta.
+   */
   int get_cost() const;
+
+  /**
+   * \brief Seta o nodo incidido.
+   *
+   * \param _incident_node o novo nodo incidido.
+   */
   void set_incident_node(int _incident_node);
+
+  /**
+   * \brief Seta o custo da aresta
+   *
+   * \param _cost o novo custo.
+   */
   void set_cost(int _cost);
 
 private:
+
+  /**
+   * \brief Seta os dados do objeto atual de acordo com os parâmetros de other.
+   *
+   * \param other O Incidence a ser copiado.
+   */
   void set_parameters(const Incidence& other);
 
 };
