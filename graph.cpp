@@ -121,3 +121,15 @@ list<int> Graph::johnsons_maximal_clique()
   return sub;
 
 };
+
+bool Graph::has_edge(int i, int j) {
+
+  for (list<Incidence>::iterator it = adjacency_lists[i].begin(); it != adjacency_lists[i].end(); it++) {
+    if (it->get_incident_node() == j) {
+      return true;
+    };
+  };
+
+  return false;
+
+};

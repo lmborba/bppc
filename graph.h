@@ -129,6 +129,8 @@ public:
    */
   int number_of_nodes();
 
+  bool has_edge(int i, int j);
+
 private:
   /**
    * Copia os parametros de other para o objeto atual.

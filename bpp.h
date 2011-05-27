@@ -22,7 +22,10 @@
 
 #include <vector>
 #include <list>
+#include "graph.h"
 using namespace std;
+
+#define INF 1000000
 
 /**
  * \brief Classe que define um Bin Packing Problem.
@@ -32,7 +35,7 @@ class BPP
 
  private:
   int capacity; ///< A capacidade das caixas.
-  list<int> items; ///< O vetor com o tamanho de cada um dos itens.
+  vector<int> items; ///< O vetor com o tamanho de cada um dos itens.
 
  public:
   /**
@@ -72,7 +75,7 @@ class BPP
    *
    * \return Vetor com os tamanhos de cada um dos itens, na ordem em que foram setados.
    */
-  list<int> & get_items();
+  vector<int> get_items();
 
   /**
    * \brief Getter da capacidade das caixas do problema.
@@ -100,6 +103,18 @@ class BPP
    * \return Limitante inferior do Bin Packing Problem.
    */
   int lower_bound_0();
+
+  /**
+   *
+   */
+  void add_size_conflicts(Graph & conflicts);
+
+  int transportation(list<int> & items, Graph & conflicts);
+
+  int transport_problem(vector<int> & a, vector<int> & b, vector<vector<int> > & c, vector<vector<int> > & x);
+
+  int calc_transportation(int l, vector<bool> &not_used_items, vector<int> & residuals, list<int> & prev_items, Graph & conflicts, int min_index, int min);
+
 
  private:
   /**

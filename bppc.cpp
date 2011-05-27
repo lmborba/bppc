@@ -35,6 +35,12 @@ void BPPC::read_line(int line, ifstream & file)
   };
 };
 
+void BPPC::generate_conflicts_big()
+{
+  conflicts_big = new Graph(*conflicts);
+  bin_packing->add_size_conflicts(*conflicts_big);
+};
+
 BPPC::BPPC(string file_name)
 {
   ifstream bppc_file;
@@ -50,20 +56,28 @@ BPPC::BPPC(string file_name)
   };
   bppc_file.close();
 
-  list<int> a = conflicts->johnsons_maximal_clique();
-  for (list<int>::iterator it = a.begin(); it != a.end() ;it++) {
-    cout << *it << endl;
-  };
-}
+  generate_conflicts_big();
+
+  //list<int> a = conflicts_big->johnsons_maximal_clique();
+  //cout << a.size() << endl;
+};
 
 int BPPC::lower_bound_0_bpp()
 {
   bin_packing->lower_bound_0();
 };
 
+int BPPC::lower_bound_cp()
+{
+  list<int> clique = conflicts_big->johnsons_maximal_clique();
+  cout << clique.size() << endl;
+  int ret = bin_packing->transportation(clique,*conflicts_big);
+  return ret;
+};
+
 BPPC::~BPPC()
 {
+  delete conflicts_big;
   delete conflicts;
   delete bin_packing;
 }
-

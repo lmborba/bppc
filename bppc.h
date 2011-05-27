@@ -37,6 +37,7 @@ class BPPC
 
  private:
   Graph * conflicts; ///< Grafo de conflitos.
+  Graph * conflicts_big; ///< Grafo G' descrito no artigo.
   BPP * bin_packing; ///< O problema bin packing sem o grafo de conflitos.
 
  public:
@@ -65,6 +66,12 @@ class BPPC
    */
   int lower_bound_0_bpp();
 
+  /**
+   *
+   */
+  int lower_bound_cp();
+
+
  private:
 
   /**
@@ -78,6 +85,15 @@ class BPPC
    * \param file stream do arquivo sendo lido.
    */
   void read_line(int line, ifstream & file);
+
+  /**
+   * \internal
+   * \brief Gera o grafo G' descrito no artigo, com base nos dados do BPP.
+   *
+   * Dado o grafo original, adiciona arestas entre os nodos cuja soma dos pesos
+   * é maior que a capacidade.
+   */
+  void generate_conflicts_big();
 
 };
 
