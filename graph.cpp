@@ -122,6 +122,71 @@ list<int> Graph::johnsons_maximal_clique()
 
 };
 
+list<int> Graph::johnsons_maximal_clique(list<int> & clique)
+{
+
+  list<int> sub = clique;
+  int n_nodes = number_of_nodes();
+  vector<bool> rest(n_nodes,true);
+  list<int> rest_list;
+  for (list<int>::iterator it = sub.begin(); it != sub.end(); it++) {
+    rest[*it] = false;
+  };
+  for (int i=0;i<rest.size();i++) {
+    if (rest[i]) {
+      rest_list.push_back(i);
+    };
+  };
+
+  for (list<int>::iterator it = clique.begin(); it != clique.end(); it++) {
+    list<int> new_list;
+    for (list<int>::iterator it2 =rest_list.begin();it2 != rest_list.end(); it2++) {
+      if (has_edge(*it,*it2)) {
+        new_list.push_back(*it2);
+      };
+    };
+    rest_list = new_list;
+  };
+
+  rest.clear();
+  rest.resize(n_nodes,false);
+  for (list<int>::iterator it = rest_list.begin(); it != rest_list.end(); it++) {
+    rest[*it] = true;
+  };
+
+  while (rest_list.size()) {
+    int cur = -1;
+    int max = -1;
+    for (list<int>::iterator nd = rest_list.begin(); nd != rest_list.end(); nd++) {
+      int val = 0;
+      for (list<Incidence>::iterator it = adjacency_lists[*nd].begin(); it != adjacency_lists[*nd].end(); it++) {
+        if (rest[it->get_incident_node()]) {
+          val++;
+        };
+      };
+      if (val > max) {
+        cur = *nd;
+        max = val;
+      };
+    };
+    sub.push_back(cur);
+    rest_list = list<int>(0);
+    vector<bool> new_rest(n_nodes,false);
+    for (list<Incidence>::iterator it = adjacency_lists[cur].begin(); it != adjacency_lists[cur].end(); it++) {
+      if (rest[it->get_incident_node()]) {
+        new_rest[it->get_incident_node()] = true;
+        rest_list.push_back(it->get_incident_node());
+      };
+    };
+    rest = new_rest;
+
+  };
+
+  return sub;
+
+};
+
+
 bool Graph::has_edge(int i, int j) {
 
   for (list<Incidence>::iterator it = adjacency_lists[i].begin(); it != adjacency_lists[i].end(); it++) {

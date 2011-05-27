@@ -269,30 +269,13 @@ int BPP::calc_transportation(int l, vector<bool> &not_used_items, vector<int> & 
   int ko = transport_problem(a,b,c,x);
 
   int cima = 0;
-  for (int i=0;i<x.size();i++) {
-    cima += x[i][0];
+  for (int i=0;i<x[0].size();i++) {
+    cima += x[0][i];
   };
 
   for (int i=0;i<Illl.size();i++) {
     cima += Illl[i];
   };
-
-  int zl = 0;
-  for (int i=0;i<Ill.size();i++) {
-    zl += Ill[i];
-  };
-  for (int i=0;i<x.size();i++) {
-    for (int j=1;j<x[i].size();j++) {
-      zl += x[i][j];
-    };
-  };
-  for (int i=1;i<residuals.size();i++) {
-    zl -= residuals[i];
-  };
-
-  zl = (zl > 0) ? zl : 0;
-
-  cima += zl;
 
   int sec = (cima/capacity) + ((cima%capacity) ? 1 : 0);
 

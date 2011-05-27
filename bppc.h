@@ -66,6 +66,8 @@ class BPPC
    */
   int lower_bound_0_bpp();
 
+  int lower_bound_cp_imp();
+
   /**
    *
    */

@@ -36,10 +36,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lmborba/projects/bppc
+CMAKE_SOURCE_DIR = /home/lmborba/bppc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lmborba/projects/bppc
+CMAKE_BINARY_DIR = /home/lmborba/bppc
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -66,9 +66,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lmborba/projects/bppc/CMakeFiles /home/lmborba/projects/bppc/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lmborba/bppc/CMakeFiles /home/lmborba/bppc/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lmborba/projects/bppc/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lmborba/bppc/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -107,32 +107,6 @@ bppc: cmake_check_build_system
 bppc/fast:
 	$(MAKE) -f CMakeFiles/bppc.dir/build.make CMakeFiles/bppc.dir/build
 .PHONY : bppc/fast
-
-#=============================================================================
-# Target rules for targets named doc
-
-# Build rule for target.
-doc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 doc
-.PHONY : doc
-
-# fast build rule for target.
-doc/fast:
-	$(MAKE) -f CMakeFiles/doc.dir/build.make CMakeFiles/doc.dir/build
-.PHONY : doc/fast
-
-#=============================================================================
-# Target rules for targets named doxygen
-
-# Build rule for target.
-doxygen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 doxygen
-.PHONY : doxygen
-
-# fast build rule for target.
-doxygen/fast:
-	$(MAKE) -f CMakeFiles/doxygen.dir/build.make CMakeFiles/doxygen.dir/build
-.PHONY : doxygen/fast
 
 bpp.o: bpp.cpp.o
 .PHONY : bpp.o
@@ -261,8 +235,6 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... bppc"
-	@echo "... doc"
-	@echo "... doxygen"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bpp.o"

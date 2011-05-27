@@ -94,6 +94,8 @@ public:
    */
   void add_bidirectional_edge(int node_a, int node_b, int cost);
 
+  list<int> johnsons_maximal_clique(list<int> & clique);
+
   /**
    * \brief Exibe o grafo em um stream de saída.
    *

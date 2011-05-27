@@ -70,9 +70,18 @@ int BPPC::lower_bound_0_bpp()
 int BPPC::lower_bound_cp()
 {
   list<int> clique = conflicts_big->johnsons_maximal_clique();
-  cout << clique.size() << endl;
   int ret = bin_packing->transportation(clique,*conflicts_big);
   return ret;
+};
+
+int BPPC::lower_bound_cp_imp()
+{
+
+  list<int> clique = conflicts->johnsons_maximal_clique();
+  list<int> subclique = conflicts_big->johnsons_maximal_clique(clique);
+  int ret = bin_packing->transportation(subclique,*conflicts_big);
+  return ret;
+
 };
 
 BPPC::~BPPC()
