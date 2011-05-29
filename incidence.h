@@ -87,6 +87,12 @@ public:
    * \param _cost o novo custo.
    */
   void set_cost(int _cost);
+  bool operator==(const Incidence& other) const;
+  bool operator<(const Incidence& other) const;
+  bool operator>(const Incidence& other) const;
+  bool operator<=(const Incidence& other) const;
+  bool operator>=(const Incidence& other) const;
+
 
 private:
 

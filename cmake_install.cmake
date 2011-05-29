@@ -1,4 +1,4 @@
-# Install script for directory: /home/lmborba/bppc
+# Install script for directory: /home/lmborba/projects/bppc
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/lmborba/bppc/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/lmborba/projects/bppc/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/lmborba/bppc/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/lmborba/projects/bppc/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

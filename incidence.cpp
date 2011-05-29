@@ -40,6 +40,31 @@ Incidence::~Incidence()
 {
 }
 
+bool Incidence::operator==(const Incidence& other) const
+{
+  return (other.get_incident_node() == get_incident_node());
+};
+
+bool Incidence::operator<(const Incidence& other) const
+{
+  return (other.get_incident_node() > get_incident_node());
+};
+
+bool Incidence::operator<=(const Incidence& other) const
+{
+  return (other.get_incident_node() >= get_incident_node());
+};
+
+bool Incidence::operator>=(const Incidence& other) const
+{
+  return (other.get_incident_node() <= get_incident_node());
+};
+
+bool Incidence::operator>(const Incidence& other) const
+{
+  return (other.get_incident_node() < get_incident_node());
+};
+
 Incidence& Incidence::operator=(const Incidence& other)
 {
   set_parameters(other);

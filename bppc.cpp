@@ -58,6 +58,10 @@ BPPC::BPPC(string file_name)
 
   generate_conflicts_big();
 
+  conflicts_big->unique();
+  conflicts->unique();
+
+  //cout << *conflicts_big;
   //list<int> a = conflicts_big->johnsons_maximal_clique();
   //cout << a.size() << endl;
 };
@@ -70,6 +74,7 @@ int BPPC::lower_bound_0_bpp()
 int BPPC::lower_bound_cp()
 {
   list<int> clique = conflicts_big->johnsons_maximal_clique();
+  //cout << clique.size() << endl;
   int ret = bin_packing->transportation(clique,*conflicts_big);
   return ret;
 };
@@ -79,6 +84,7 @@ int BPPC::lower_bound_cp_imp()
 
   list<int> clique = conflicts->johnsons_maximal_clique();
   list<int> subclique = conflicts_big->johnsons_maximal_clique(clique);
+  //cout << subclique.size() << endl;
   int ret = bin_packing->transportation(subclique,*conflicts_big);
   return ret;
 

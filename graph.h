@@ -25,6 +25,7 @@
 #include <iostream>
 #include <sstream>
 #include "incidence.h"
+#include <set>
 
 using namespace std;
 
@@ -35,7 +36,7 @@ class Graph
 {
 
 private:
-  vector<list<Incidence> > adjacency_lists; ///< Vetor com uma lista para cada nodo, representando os itens que são adjacentes a estes nodos.
+  vector<set<Incidence> > adjacency_lists; ///< Vetor com uma lista para cada nodo, representando os itens que são adjacentes a estes nodos.
 
 public:
 
@@ -133,11 +134,21 @@ public:
 
   bool has_edge(int i, int j);
 
+  void unique();
+
 private:
   /**
    * Copia os parametros de other para o objeto atual.
    */
+
+  //void clear_data();
+
   void set_parameters(const Graph& other);
+
+  void calc_johnsons(list<int> & sub, vector<set<Incidence> > & sub_graph, list<int> & rest_list);
+
+  list<int> same_items(list<int> &rest, set<Incidence> &adjacency, list<int> & to_del);
+
 };
 
 #endif // GRAPH_H

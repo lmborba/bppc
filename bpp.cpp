@@ -233,83 +233,130 @@ int BPP::transport_problem(vector<int> & a, vector<int> & b, vector<vector<int> 
 int BPP::calc_transportation(int l, vector<bool> &not_used_items, vector<int> & residuals, list<int> & prev_items, Graph & conflicts, int min_index, int min)
 {
 
-  vector<int> Il;
-  vector<int> Ill;
-  vector<int> Illl;
-  for (int i=0;i<items.size();i++) {
-    if (not_used_items[i]) {
-      if (items[i] < l) {
-        Ill.push_back(items[i]);
-      } else if ((items[i] >= l) && (items[i] <= (capacity-min))) {
-        Il.push_back(items[i]);
-      } else {
-        Illl.push_back(items[i]);
-      };
-    };
-  };
 
-  vector<vector<int> > c(residuals.size(),vector<int>(Il.size()));
-  vector<vector<int> > x(residuals.size(),vector<int>(Il.size()));
-  for (int i=0;i<Il.size();i++) {
-    c[0][i] = items.size();
-  };
-  for (int i=0;i<Il.size();i++) {
-    list<int>::iterator it = prev_items.begin();
-    for (int j=1;j<residuals.size();j++) {
-      if (conflicts.has_edge(i,*it)) {
-        c[j][i] = INF;
-      } else {
-        c[j][i] = 1;
-      };
-      it++;
-    };
-  };
-  vector<int> b = Il;
-  vector<int> a = residuals;
-  int ko = transport_problem(a,b,c,x);
-
-  int cima = 0;
-  for (int i=0;i<x[0].size();i++) {
-    cima += x[0][i];
-  };
-
-  for (int i=0;i<Illl.size();i++) {
-    cima += Illl[i];
-  };
-
-  int sec = (cima/capacity) + ((cima%capacity) ? 1 : 0);
-
-  return sec + prev_items.size();
 
 };
 
 int BPP::transportation(list<int> & prev_items, Graph & conflicts)
 {
-  vector<int> residuals;
-  residuals.push_back(INF);
-  int min = items[*(prev_items.begin())];
-  int min_index = 1;
-  vector<bool> not_used_items(items.size(),true);
-  for (list<int>::iterator it = prev_items.begin(); it != prev_items.end(); it++) {
-    residuals.push_back(capacity-items[*it]);
-    if (items[*it] < min) {
-      min_index = residuals.size()-1;
-      min = items[*it];
-    };
+  vector<pair<int,int> > bins(prev_items.size()+1);
+  vector<int> not_used_items(items.size(),true);
+
+  int i =1;
+  bins[0].first = INF;
+  bins[0].second = -1;
+  int maxi = -1;
+  for (list<int>::iterator it = prev_items.begin();it != prev_items.end();it++) {
     not_used_items[*it] = false;
+    bins[i].first = capacity - items[*it];
+    if (bins[i].first > maxi) {
+      maxi = bins[i].first;
+    };
+    bins[i].second = *it;
+    i++;
   };
 
-  int max = calc_transportation(0, not_used_items, residuals, prev_items, conflicts, min_index, min);
-
-  /*
-  for (int i=0;i<= (capacity - min);i++) {
-    int val = calc_transportation(i, not_used_items, residuals, prev_items, conflicts, min_index, min);
-    cout << val << endl;
-    if (val > max) {
-      max = val;
+  int l = INF;
+  for (int i = 0; i < not_used_items.size();i++) {
+    if (not_used_items[i]) {
+      if (items[i] <= maxi) {
+        if (items[i] < l) {
+          l = items[i];
+        };
+      };
     };
-    };*/
+  };
 
-  return max;
+  vector<int> Ill;
+  vector<int> Il;
+  vector<int> Illl;
+  for (i=0;i<not_used_items.size();i++) {
+    if (not_used_items[i]) {
+      if (items[i] < l) {
+        Ill.push_back(i);
+      } else if ((items[i] >= l) && (items[i] <= maxi)) {
+        Il.push_back(i);
+      } else {
+        Illl.push_back(i);
+      };
+    };
+  };
+
+  vector<pair<int,int> > Kl;
+
+  for (int i=0;i<bins.size();i++) {
+    if (bins[i].first >= l) {
+      Kl.push_back(bins[i]);
+    };
+  };
+
+  vector<vector<int> > c(Kl.size(),vector<int>(Il.size()));
+  vector<vector<int> > x(Kl.size(),vector<int>(Il.size()));
+
+  for (int i=0;i<Kl.size();i++) {
+    for (int j=0;j<Il.size();j++) {
+      if (i >= 1) {
+        if (conflicts.has_edge(Kl[i].second,Il[j])) {
+          c[i][j] = INF;
+        } else {
+          c[i][j] = 1;
+        };
+      } else {
+        c[i][j] = items.size();
+      };
+    };
+  };
+
+  vector<int> a(Kl.size());
+  for (int i=0;i<Kl.size();i++) {
+    a[i] = Kl[i].first;
+  };
+  vector<int> b(Il.size());
+  for (int i=0;i<Il.size();i++) {
+    b[i] = items[Il[i]];
+  };
+
+  transport_problem(a, b, c, x);
+
+  int cima = 0;
+
+  for (int i=0;i<Il.size();i++) {
+    cima += x[0][i];
+  };
+
+  for (int i=0;i<Illl.size();i++) {
+    cima += items[Illl[i]];
+  };
+
+  int zl = 0;
+
+  for (int i=0;i<Ill.size();i++) {
+    zl += items[Ill[i]];
+  };
+
+  int subzl = 0;
+
+  for (int i=0;i<bins.size();i++) {
+    if (bins[i].second != -1) {
+      subzl += bins[i].first;
+    };
+  };
+
+  for (int i=0;i<Il.size();i++) {
+    for (int j=1;j<Kl.size();j++) {
+      subzl -= x[j][i];
+    };
+  };
+
+  zl -= subzl;
+  zl = max(0,zl);
+  cima += zl;
+
+  //  cout << zl << endl;
+
+  //  cout << prev_items.size() << "," << ((cima/capacity) + ((cima % capacity) ? 1 : 0)) << endl;
+
+  return prev_items.size() + ((cima/capacity) + ((cima % capacity) ? 1 : 0));
 
 };
+
