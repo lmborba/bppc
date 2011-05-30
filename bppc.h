@@ -73,6 +73,9 @@ class BPPC
    */
   int lower_bound_cp();
 
+  int upper_bound_ff();
+  int upper_bound_bf();
+  int upper_bound_wf();
 
  private:
 

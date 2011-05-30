@@ -90,6 +90,28 @@ int BPPC::lower_bound_cp_imp()
 
 };
 
+int BPPC::upper_bound_ff()
+{
+
+  bin_packing->upper_bound_ffd(*conflicts);
+
+};
+
+int BPPC::upper_bound_bf()
+{
+
+  bin_packing->upper_bound_bf(*conflicts);
+
+};
+
+int BPPC::upper_bound_wf()
+{
+
+  bin_packing->upper_bound_wf(*conflicts);
+
+};
+
+
 BPPC::~BPPC()
 {
   delete conflicts_big;

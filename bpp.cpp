@@ -360,3 +360,120 @@ int BPP::transportation(list<int> & prev_items, Graph & conflicts)
 
 };
 
+int BPP::upper_bound_ffd(Graph & conflicts)
+{
+  vector<int> sub_items = items;
+  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int j;
+    for (j=0;j<bins.size();j++) {
+      if (bins[j].first >= sub_items[i]) {
+        bool t =false;
+        for (list<int>::iterator it = bins[j].second.begin(); it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,i)) {
+            t = true;
+            break;
+          };
+        };
+        if (!t) {
+          break;
+        };
+      };
+    };
+
+    if (j >= bins.size()) {
+      bins.push_back(pair<int,list<int> >(capacity,list<int>(0)));
+    };
+
+    bins[j].first -= sub_items[i];
+    bins[j].second.push_back(i);
+
+  };
+
+  return bins.size();
+
+};
+
+int BPP::upper_bound_bf(Graph & conflicts)
+{
+
+  vector<int> sub_items = items;
+  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int res = -1;
+    int val = -1;
+    for (int j=0;j<bins.size();j++) {
+      if (bins[j].first + sub_items[i] <= capacity) {
+        bool not_conflict = true;
+        for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,i)) {
+            not_conflict = false;
+          };
+        };
+        if (not_conflict) {
+          if (bins[j].first + sub_items[i] > res) {
+            res = bins[j].first + sub_items[i];
+            val = j;
+          };
+        };
+      };
+    };
+
+    if (val == -1) {
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
+      val = bins.size()-1;
+    };
+
+    bins[val].first += sub_items[i];
+    bins[val].second.push_back(i);
+
+  };
+
+  return bins.size();
+
+};
+
+int BPP::upper_bound_wf(Graph & conflicts)
+{
+
+  vector<int> sub_items = items;
+  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int res = INF;
+    int val = -1;
+    for (int j=0;j<bins.size();j++) {
+      if (bins[j].first + sub_items[i] <= capacity) {
+        bool not_conflict = true;
+        for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,i)) {
+            not_conflict = false;
+          };
+        };
+        if (not_conflict) {
+          if (bins[j].first + sub_items[i] < res) {
+            res = bins[j].first + sub_items[i];
+            val = j;
+          };
+        };
+      };
+    };
+
+    if (val == -1) {
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
+      val = bins.size()-1;
+    };
+
+    bins[val].first += sub_items[i];
+    bins[val].second.push_back(i);
+
+  };
+
+  return bins.size();
+
+};

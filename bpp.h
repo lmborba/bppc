@@ -23,6 +23,7 @@
 #include <vector>
 #include <list>
 #include "graph.h"
+#include <algorithm>
 using namespace std;
 
 #define INF 1000000
@@ -103,6 +104,11 @@ class BPP
    * \return Limitante inferior do Bin Packing Problem.
    */
   int lower_bound_0();
+
+  int upper_bound_ffd(Graph & conflicts);
+
+  int upper_bound_bf(Graph & conflicts);
+  int upper_bound_wf(Graph & conflicts);
 
   /**
    *
