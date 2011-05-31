@@ -20,6 +20,9 @@
 #ifndef BPP_H
 #define BPP_H
 
+#include <boost/unordered_set.hpp>
+using namespace boost;
+
 #include <vector>
 #include <list>
 #include "graph.h"
@@ -77,6 +80,7 @@ class BPP
    * \return Vetor com os tamanhos de cada um dos itens, na ordem em que foram setados.
    */
   vector<int> get_items();
+  int get_items_size();
 
   /**
    * \brief Getter da capacidade das caixas do problema.
@@ -105,11 +109,16 @@ class BPP
    */
   int lower_bound_0();
 
-  int upper_bound_ffd(Graph & conflicts);
+  double average_weight();
 
-  int upper_bound_bf(Graph & conflicts);
-  int upper_bound_wf(Graph & conflicts);
+  int upper_bound_ffd(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_bf(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_wf(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
 
+  int upper_bound_ffd(Graph & conflicts, vector<int> &sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_bf(Graph & conflicts,vector<int> & sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_wf(Graph & conflicts,vector<int> & sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  void order(list<int> & a);
   /**
    *
    */
@@ -121,6 +130,9 @@ class BPP
 
   int calc_transportation(int l, vector<bool> &not_used_items, vector<int> & residuals, list<int> & prev_items, Graph & conflicts, int min_index, int min);
 
+  vector<int> get_surrogate_bpp(double alpha, Graph & conflicts);
+
+  int item_weight(int i);
 
  private:
   /**

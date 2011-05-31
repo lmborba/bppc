@@ -223,3 +223,22 @@ bool Graph::has_edge(int i, int j) {
   return adjacency_lists[i].find(Incidence(j,1)) != adjacency_lists[i].end();
 
 };
+
+double Graph::average_degree()
+{
+
+  double soma = 0;
+  for (int i=0;i<adjacency_lists.size();i++) {
+    soma += adjacency_lists[i].size();
+  };
+
+  return soma / ((double) adjacency_lists.size());
+
+};
+
+int Graph::degree(int node)
+{
+
+  return adjacency_lists[node].size();
+
+};

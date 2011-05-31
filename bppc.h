@@ -73,9 +73,23 @@ class BPPC
    */
   int lower_bound_cp();
 
-  int upper_bound_ff();
-  int upper_bound_bf();
-  int upper_bound_wf();
+  int upper_bound_ff(list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_bf(list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  int upper_bound_wf(list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  vector<double> get_surrogate_bpp(double alpha);
+  void get_surrogate_fits(int &upper_ff, int &upper_bf, int &upper_wf, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+
+  void first_phase(int &lower, int &upper, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  void second_phase(int &lower, int &upper, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+
+  void population_heuristic(int & k, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  //void tabu_search(int & k,vector<pair<int,list<int> > > & bins);
+
+  double surrogate(list<int> & data, double avg_degree, double avg_weight, double alpha);
+
+  bool tabu_search(int & k,vector<pair<int,list<int> > > & bins);
+  bool population_heuristic(int k, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
+  void third_phase(int &lower, int &upper, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins);
 
  private:
 

@@ -45,6 +45,11 @@ vector<int> BPP::get_items()
   return items;
 };
 
+int BPP::get_items_size()
+{
+  return items.size();
+};
+
 int BPP::get_capacity()
 {
   return capacity;
@@ -360,19 +365,36 @@ int BPP::transportation(list<int> & prev_items, Graph & conflicts)
 
 };
 
-int BPP::upper_bound_ffd(Graph & conflicts)
+class Decrease {
+  vector<int> * items;
+public:
+  Decrease(vector<int> & _items) {
+    items = &_items;
+  };
+  ~Decrease(){};
+  bool operator() (int i, int j) {
+    return (*items)[i] > (*items)[j];
+  };
+};
+
+
+int BPP::upper_bound_ffd(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
 {
-  vector<int> sub_items = items;
-  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<int> sub_items(items.size());
+  for (int i=0;i<items.size();i++) {
+    sub_items[i] = i;
+  };
+  sort(sub_items.begin(),sub_items.end(),Decrease(items));
   vector<pair<int,list<int> > > bins;
 
   for (int i=0;i<sub_items.size();i++) {
+    //    cout << items[sub_items[i]] << endl;
     int j;
     for (j=0;j<bins.size();j++) {
-      if (bins[j].first >= sub_items[i]) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
         bool t =false;
         for (list<int>::iterator it = bins[j].second.begin(); it != bins[j].second.end(); it++) {
-          if (conflicts.has_edge(*it,i)) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
             t = true;
             break;
           };
@@ -384,39 +406,46 @@ int BPP::upper_bound_ffd(Graph & conflicts)
     };
 
     if (j >= bins.size()) {
-      bins.push_back(pair<int,list<int> >(capacity,list<int>(0)));
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
     };
 
-    bins[j].first -= sub_items[i];
-    bins[j].second.push_back(i);
+    bins[j].first += items[sub_items[i]];
+    bins[j].second.push_back(sub_items[i]);
 
   };
+
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
 
   return bins.size();
 
 };
 
-int BPP::upper_bound_bf(Graph & conflicts)
+int BPP::upper_bound_bf(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
 {
-
-  vector<int> sub_items = items;
-  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<int> sub_items(items.size());
+  for (int i=0;i<items.size();i++) {
+    sub_items[i] = i;
+  };
+  sort(sub_items.begin(),sub_items.end(),Decrease(items));
   vector<pair<int,list<int> > > bins;
 
   for (int i=0;i<sub_items.size();i++) {
     int res = -1;
     int val = -1;
     for (int j=0;j<bins.size();j++) {
-      if (bins[j].first + sub_items[i] <= capacity) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
         bool not_conflict = true;
         for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
-          if (conflicts.has_edge(*it,i)) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
             not_conflict = false;
           };
         };
         if (not_conflict) {
-          if (bins[j].first + sub_items[i] > res) {
-            res = bins[j].first + sub_items[i];
+          if (bins[j].first + items[sub_items[i]] > res) {
+            res = bins[j].first + items[sub_items[i]];
             val = j;
           };
         };
@@ -428,36 +457,44 @@ int BPP::upper_bound_bf(Graph & conflicts)
       val = bins.size()-1;
     };
 
-    bins[val].first += sub_items[i];
-    bins[val].second.push_back(i);
+    bins[val].first += items[sub_items[i]];
+    bins[val].second.push_back(sub_items[i]);
 
   };
+
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
 
   return bins.size();
 
 };
 
-int BPP::upper_bound_wf(Graph & conflicts)
+int BPP::upper_bound_wf(Graph & conflicts, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
 {
 
-  vector<int> sub_items = items;
-  sort(sub_items.begin(),sub_items.end(),greater<int>());
+  vector<int> sub_items(items.size());
+  for (int i=0;i<items.size();i++) {
+    sub_items[i] = i;
+  };
+  sort(sub_items.begin(),sub_items.end(),Decrease(items));
   vector<pair<int,list<int> > > bins;
 
   for (int i=0;i<sub_items.size();i++) {
     int res = INF;
     int val = -1;
     for (int j=0;j<bins.size();j++) {
-      if (bins[j].first + sub_items[i] <= capacity) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
         bool not_conflict = true;
         for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
-          if (conflicts.has_edge(*it,i)) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
             not_conflict = false;
           };
         };
         if (not_conflict) {
-          if (bins[j].first + sub_items[i] < res) {
-            res = bins[j].first + sub_items[i];
+          if (bins[j].first + items[sub_items[i]] < res) {
+            res = bins[j].first + items[sub_items[i]];
             val = j;
           };
         };
@@ -469,11 +506,223 @@ int BPP::upper_bound_wf(Graph & conflicts)
       val = bins.size()-1;
     };
 
-    bins[val].first += sub_items[i];
-    bins[val].second.push_back(i);
+    bins[val].first += items[sub_items[i]];
+    bins[val].second.push_back(sub_items[i]);
 
   };
 
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
+
   return bins.size();
 
+};
+
+class DecreaseSWC {
+  vector<double> * items;
+public:
+  DecreaseSWC(vector<double> & _items) {
+    items = &_items;
+  };
+  ~DecreaseSWC(){};
+  bool operator() (int i, int j) {
+    return (*items)[i] > (*items)[j];
+  };
+};
+
+class Supa {
+  vector<int> items;
+public:
+  Supa(int size)
+    : items(size)
+  {
+    for (int i=0;i<items.size();i++) {
+      items[i] = rand()%items.size();
+    };
+  };
+  ~Supa(){};
+  bool operator() (int i, int j) {
+    return (items)[i] > (items)[j];
+  };
+};
+
+void BPP::order(list<int> & a) {
+  a.sort(Supa(items.size()));
+};
+
+double BPP::average_weight()
+{
+
+  double soma = 0;
+
+  for (int i=0;i<items.size();i++) {
+    soma += items[i];
+  };
+
+  return (soma / ((double) items.size()));
+
+};
+
+vector<int> BPP::get_surrogate_bpp(double alpha, Graph & conflicts)
+{
+
+  double avg_degree = conflicts.average_degree();
+  double soma = 0;
+
+  for (int i=0;i<items.size();i++) {
+    soma += items[i];
+  };
+
+  double avg_weight = soma / ((double) items.size());
+
+  vector<double> toret(items.size());
+
+  for (int i=0;i<items.size();i++) {
+    toret[i] = ((alpha*((double) items[i]))/avg_weight) + (((((double) 1)-alpha)*((double) conflicts.degree(i)))/avg_degree);
+  };
+
+  vector<int> sub_items(toret.size());
+  for (int i=0;i<toret.size();i++) {
+    sub_items[i] = i;
+  };
+  sort(sub_items.begin(),sub_items.end(),DecreaseSWC(toret));
+
+  return sub_items;
+
+};
+
+int BPP::upper_bound_ffd(Graph & conflicts,vector<int> & sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
+{
+
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int j;
+    for (j=0;j<bins.size();j++) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
+        bool t =false;
+        for (list<int>::iterator it = bins[j].second.begin(); it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
+            t = true;
+            break;
+          };
+        };
+        if (!t) {
+          break;
+        };
+      };
+    };
+
+    if (j >= bins.size()) {
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
+    };
+
+
+    bins[j].first += items[sub_items[i]];
+    bins[j].second.push_back(sub_items[i]);
+
+  };
+
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
+
+  return bins.size();
+
+};
+
+int BPP::upper_bound_bf(Graph & conflicts, vector<int> & sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
+{
+
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int res = -1;
+    int val = -1;
+    for (int j=0;j<bins.size();j++) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
+        bool not_conflict = true;
+        for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
+            not_conflict = false;
+          };
+        };
+        if (not_conflict) {
+          if (bins[j].first + items[sub_items[i]] > res) {
+            res = bins[j].first + items[sub_items[i]];
+            val = j;
+          };
+        };
+      };
+    };
+
+    if (val == -1) {
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
+      val = bins.size()-1;
+    };
+
+    bins[val].first += items[sub_items[i]];
+    bins[val].second.push_back(sub_items[i]);
+
+  };
+
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
+
+  return bins.size();
+
+};
+
+int BPP::upper_bound_wf(Graph & conflicts,vector<int> & sub_items, list<vector<pair<int,list<int> > > > & pool, unordered_set<pair<int,list<int> > > & feasible_bins)
+{
+
+  vector<pair<int,list<int> > > bins;
+
+  for (int i=0;i<sub_items.size();i++) {
+    int res = INF;
+    int val = -1;
+    for (int j=0;j<bins.size();j++) {
+      if (bins[j].first + items[sub_items[i]] <= capacity) {
+        bool not_conflict = true;
+        for (list<int>::iterator it = bins[j].second.begin();it != bins[j].second.end(); it++) {
+          if (conflicts.has_edge(*it,sub_items[i])) {
+            not_conflict = false;
+          };
+        };
+        if (not_conflict) {
+          if (bins[j].first + items[sub_items[i]] < res) {
+            res = bins[j].first + items[sub_items[i]];
+            val = j;
+          };
+        };
+      };
+    };
+
+    if (val == -1) {
+      bins.push_back(pair<int,list<int> >(0,list<int>(0)));
+      val = bins.size()-1;
+    };
+
+    bins[val].first += items[sub_items[i]];
+    bins[val].second.push_back(sub_items[i]);
+
+  };
+
+  for (int i=0;i<bins.size();i++) {
+    feasible_bins.insert(bins[i]);
+  };
+  pool.push_back(bins);
+
+  return bins.size();
+
+};
+
+int BPP::item_weight(int i)
+{
+  return items[i];
 };

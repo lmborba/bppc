@@ -136,6 +136,10 @@ public:
 
   void unique();
 
+  double average_degree();
+
+  int degree(int node);
+
 private:
   /**
    * Copia os parametros de other para o objeto atual.
